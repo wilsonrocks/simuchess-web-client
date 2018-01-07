@@ -1,5 +1,7 @@
 .board {
-   
+   border-collapse: collapse;
+   border: 2px solid black;
+   margin: auto;
 }
 
 
@@ -10,6 +12,7 @@
 
 td {
     border: none;
+    text-align: center;
 }
 
 tr:nth-child(even) td:nth-child(even),
