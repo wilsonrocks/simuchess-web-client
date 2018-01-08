@@ -1,31 +1,36 @@
+body {
+    max-width: 800px;
+    margin: auto;
+}
+
+.login-form {
+    margin: 10px;
+}
+
 .board {
    border-collapse: collapse;
    border: 2px solid black;
    margin: auto;
+   margin-top: 10px;
 }
-
 
 .square {
     width: 50px;
     height: 50px;
 }
 
-td {
+.board td {
     border: none;
     text-align: center;
 }
 
-tr:nth-child(even) td:nth-child(even),
-tr:nth-child(odd) td:nth-child(odd) {
+.row:nth-child(even) .square:nth-child(even),
+.row:nth-child(odd) .square:nth-child(odd) {
     background-color: orange;
 }
 
-tr:nth-child(odd) td:nth-child(even),
-tr:nth-child(even) td:nth-child(odd)
+.row:nth-child(odd) .square:nth-child(even),
+.row:nth-child(even) .square:nth-child(odd)
 {
-
     background-color: brown;
 }
-
-
-

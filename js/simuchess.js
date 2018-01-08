@@ -5,3 +5,5 @@ function addPiece (square, colour, piece) {
 function clearSquare (square) {
     $("#"+square+" img").remove();
 }
+
+addPiece("c6","black","pawn");
