@@ -12,16 +12,14 @@ function clearSquare (square) {
 $("#login-submit").click(function () {
     user.username = $("#username-field").val();
     user.password = $("#password-field").val();
-    $.getJSON("/simuchess/token",user,function(data) {
+    $.getJSON("/simuchess/token", user, function(data) {
         user.token = data.token;
         user.passsword = undefined;
         $(".username-greeting").text(user.username);
-        console.log(user);
-
-
-    });
-
-
+        })
+        .fail(function(data) {
+            console.log(data);
+            $("#login-error").text("PROBLEM");});
 });
 
 

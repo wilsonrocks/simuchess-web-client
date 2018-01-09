@@ -12,6 +12,9 @@ body {
     font-style: italic;
 }
 
+.error {
+    display: none;
+}
 .board {
    border-collapse: collapse;
    margin: auto;
