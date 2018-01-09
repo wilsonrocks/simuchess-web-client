@@ -14,6 +14,7 @@ body {
 
 .error {
     display: none;
+    color: red;
 }
 .board {
    border-collapse: collapse;
