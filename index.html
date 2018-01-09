@@ -9,15 +9,16 @@
     <title>Will this be a Simuchess client?</title>
 </head>
 <body>
+  <h1>Welcome to Simuchess, <span class="username-greeting">Guest</span>!</h1>
 
-    <form class="login-form" action="#">
+    <form class="login-form">
       <fieldset>
         <legend>Login</legend>
         <label for="username-field">Username</label>
-        <input type="text" name="username" id="username-field">
+        <input type="text" name="username" id="username-field" autocomplete="username">
         <label for="password-field">Password</label>
-        <input type="password" name="password" id="password-field">
-        <input type="submit">
+        <input type="password" name="password" id="password-field" autocomplete="current-password">
+        <input type="button" id="login-submit" value="login">
       </fieldset>
     </form>
 

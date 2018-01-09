@@ -1,15 +1,19 @@
 body {
     max-width: 800px;
     margin: auto;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .login-form {
     margin: 10px;
 }
 
+.username-greeting {
+    font-style: italic;
+}
+
 .board {
    border-collapse: collapse;
-   border: 2px solid black;
    margin: auto;
    margin-top: 10px;
 }
