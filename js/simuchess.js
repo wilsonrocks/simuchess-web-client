@@ -19,6 +19,7 @@ $("#login-submit").click(function () {
         user.passsword = undefined;
         $(".username-greeting").text(user.username);
         $("#login-error").text("").css("display","none");
+        $("#login-form").css("display","none");
         })
         .fail(function(data) {//On failure
             console.log(data);

@@ -11,7 +11,7 @@
 <body>
   <h1>Welcome to Simuchess, <span class="username-greeting">Guest</span>!</h1>
 
-    <form class="login-form">
+    <form id="login-form">
       <fieldset>
         <legend>Login</legend>
         <label for="username-field">Username</label>
@@ -19,8 +19,8 @@
         <label for="password-field">Password</label>
         <input type="password" name="password" id="password-field" autocomplete="current-password">
         <input type="button" id="login-submit" value="login">
+        <div class="error" id="login-error"></div>    
       </fieldset>
-      <div class="error" id="login-error"></div>
     </form>
 
     <table class="board">

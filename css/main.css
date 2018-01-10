@@ -4,7 +4,7 @@ body {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.login-form {
+form {
     margin: 10px;
 }
 
@@ -20,6 +20,7 @@ body {
    border-collapse: collapse;
    margin: auto;
    margin-top: 10px;
+   padding: 20px;
 }
 
 .square {
