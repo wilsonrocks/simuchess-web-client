@@ -11,15 +11,28 @@ function addPiece (square, colour, piece) {
 function clearSquare (square) {
     $("#"+square+" img").remove();
 }
+
+function addGameChoices () {
+    $.getJSON(baseURL + "/simuchess/player", user, function (data) {
+        data.games.forEach(function (gameID) {
+            console.log(gameID);
+            $("#game-choice").prepend(`<option>${gameID}</option>`);
+        });
+    });
+}
+
 $("#login-submit").click(function () {
     user.username = $("#username-field").val();
     user.password = $("#password-field").val();
     $.getJSON(baseURL + "/simuchess/token", user, function(data) {//On Success
-        user.token = data.token;
+        user.token = data.token; //manage the user object
         user.passsword = undefined;
+        
         $(".username-greeting").text(user.username);
         $("#login-error").text("").css("display","none");
         $("#login-form").css("display","none");
+
+        addGameChoices();
         })
         .fail(function(data) {//On failure
             console.log(data);
