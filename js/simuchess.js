@@ -6,6 +6,10 @@ let user = {username: undefined,
 
 updatePageWithLoginStatus();
 
+function loggedIn() {
+    return user.token !== undefined;
+}
+
 function addPiece (square, colour, piece) {
     $("#"+square).prepend(`<img class="piece" src="images/${colour}_${piece}.svg" alt="${colour} ${piece}">`);
 }
@@ -15,15 +19,20 @@ function clearSquare (square) {
 }
 
 function updatePageWithLoginStatus () {
-    if (user.token === undefined) { //not logged in
-        $(".logged-in").css("display","none"); //don't show the logged in stuff
-        $(".not-logged-in").css("display","unset"); //go back to whatever it was
-    }
-    else {
+
+    if (loggedIn()) {
         $(".logged-in").css("display","unset");
         $(".not-logged-in").css("display","none");
     }
-    
+
+    else { //not logged in
+        $(".logged-in").css("display","none"); //don't show the logged in stuff
+        $(".not-logged-in").css("display","unset"); //go back to whatever it was
+    }
+
+
+
+
 }
 
 function addGameChoices () {
@@ -41,10 +50,10 @@ $("#login-submit").click(function () {
         user.token = data.token; //manage the user object
         user.password = undefined;
         $("#password-field").text("");
-        
+
         $(".username-greeting").text(user.username);
         $("#login-error").text("").css("display","none");
-        console.log(user);       
+        console.log(user);
         updatePageWithLoginStatus();
 
         addGameChoices();
@@ -54,10 +63,10 @@ $("#login-submit").click(function () {
             $("#login-error")
             .text("PROBLEM:" + data.responseJSON.message)
             .css("display", "unset");
-           
+
         });
 
-    
+
 });
 
 
