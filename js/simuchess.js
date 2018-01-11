@@ -2,13 +2,15 @@ const baseURL = "http://wilsonseverywhere.ddns.net";
 
 let user = {username: undefined,
             password: undefined,
-            token: undefined};
+            token: undefined
+        };
 
 updatePageWithLoginStatus();
 
 function loggedIn() {
     return user.token !== undefined;
 }
+
 
 function addPiece (square, colour, piece) {
     $("#"+square).prepend(`<img class="piece" src="images/${colour}_${piece}.svg" alt="${colour} ${piece}">`);
