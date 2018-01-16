@@ -64,24 +64,22 @@ const logOut = function () {
 
 $("#logout").click(logOut);
 
+function basicAuthHeader (username, password) {
+    let header = {};
+    header.Authorization = `Basic ${btoa(username + ':' + password)}`;
+    return header;
+}
+console.log(basicAuthHeader("yeshuah","civ"));
+
 $("#login-submit").click(function () {
     user.username = $("#username-field").val();
     user.password = $("#password-field").val();
-    $.getJSON(baseURL + "/simuchess/token", user, function(data) {//On Success
-        user.token = data.token; //manage the user object
-        user.password = undefined;
-        $("#password-field").text("");
-        $("#login-error").text("").css("display","none");
-        updatePageWithLoginStatus();
-
-        addGameChoices();
-        })
-        .fail(function(data) {//On failure
-            console.log(data);
-            $("#login-error")
-            .text("PROBLEM:" + data.responseJSON.message)
-            .css("display", "unset");
-        });
+    
+    $.ajax(
+    {
+        url : baseURL + '/simuchess/token',
+        headers : basicAuthHeader(user.username, user.password)
+    }).done(x => console.log(x.token));
 });
 
 addPiece("c6","black","pawn");
