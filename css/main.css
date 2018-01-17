@@ -13,7 +13,7 @@ form {
     font-style: italic;
 }
 
-.error {
+#login-error {
     display: none;
     color: red;
 }

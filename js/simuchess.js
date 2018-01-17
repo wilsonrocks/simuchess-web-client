@@ -13,6 +13,18 @@ function loggedIn() {
     return user.token !== undefined;
 }
 
+function displayLoginError(message) {
+    $("#login-error")
+    .text(`Error: ${message}`)
+    .css("display", "unset");
+}
+
+function clearLoginError() {
+    $("#login-error")
+    .text("")
+    .css("display", "none");
+}
+
 function addPiece (square, colour, piece) {
     $("#"+square).prepend(`<img class="piece" src="images/${colour}_${piece}.svg" alt="${colour} ${piece}">`);
 }
@@ -72,14 +84,21 @@ function basicAuthHeader (username, password) {
 console.log(basicAuthHeader("yeshuah","civ"));
 
 $("#login-submit").click(function () {
+    clearLoginError();
+
     user.username = $("#username-field").val();
     user.password = $("#password-field").val();
     
     $.ajax(
     {
         url : baseURL + '/simuchess/token',
-        headers : basicAuthHeader(user.username, user.password)
-    }).done(x => console.log(x.token));
+        headers : basicAuthHeader(user.username, user.password),
+        statusCode : {
+            401 : function () {displayLoginError("Problem with your credentials")},
+            500 : function () {displayLoginError("Problem with the Simuchess game server")},
+            502 : function () {displayLoginError("Problem with the Simuchess Gateway")}
+        }
+    }).done(console.log);
 });
 
 addPiece("c6","black","pawn");

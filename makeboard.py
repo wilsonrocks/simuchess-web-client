@@ -1,3 +1,6 @@
+"""
+A simple script to generate the HTML board for the simuchess game web client.
+"""
 print('<table class="board">')
 print('  <tr>')
 print('    <th scope="column"></th>')
