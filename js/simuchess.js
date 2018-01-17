@@ -60,21 +60,27 @@ function addGameChoices () {
     });
 }
 
-const logOut = function () {
+const tryLogOut = function () {
     $.ajax({
         url: baseURL + "/simuchess/token",
         type: 'DELETE',
-        data: {token:user.token},
-        success: function(request) {console.log("YO");}
+        headers: {
+            Authorization: user.token,
+        },
+        success: successfulLogOut,
     });
 
+}
+
+function successfulLogOut (data, status, jqXHR) {
+    
     clearBoard();
     $("#game-choice").children().remove();    // wipe games list
     clearUserData();// reset user object to undefined
     updatePageWithLoginStatus();
 }
 
-$("#logout").click(logOut);
+$("#logout").click(tryLogOut);
 
 function basicAuthHeader (username, password) {
     let header = {};
