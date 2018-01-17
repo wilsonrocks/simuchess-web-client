@@ -81,14 +81,19 @@ function basicAuthHeader (username, password) {
     header.Authorization = `Basic ${btoa(username + ':' + password)}`;
     return header;
 }
-console.log(basicAuthHeader("yeshuah","civ"));
 
-$("#login-submit").click(function () {
+
+
+
+$("#login-submit").click(tryLogin);
+    
+
+function tryLogin () {
     clearLoginError();
 
     user.username = $("#username-field").val();
     user.password = $("#password-field").val();
-    
+
     $.ajax(
     {
         url : baseURL + '/simuchess/token',
@@ -97,8 +102,14 @@ $("#login-submit").click(function () {
             401 : function () {displayLoginError("Problem with your credentials")},
             500 : function () {displayLoginError("Problem with the Simuchess game server")},
             502 : function () {displayLoginError("Problem with the Simuchess Gateway")}
-        }
-    }).done(console.log);
-});
+        },
+        success : successfulLogin,
+    });
+}
+
+function successfulLogin (data, status, jqXHR) {
+    user.token = data.token;
+    updatePageWithLoginStatus();
+}
 
 addPiece("c6","black","pawn");
