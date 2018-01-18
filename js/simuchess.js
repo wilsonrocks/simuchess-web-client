@@ -1,6 +1,7 @@
 const baseURL = "http://wilsonseverywhere.ddns.net";
 
-let user = {}
+let user = {};
+let gameData = {};
 
 const clearUserData = function () {
     user.username = user.password = user.token = undefined;
@@ -88,9 +89,6 @@ function basicAuthHeader (username, password) {
     return header;
 }
 
-
-
-
 $("#login-submit").click(tryLogin);
     
 
@@ -116,6 +114,35 @@ function tryLogin () {
 function successfulLogin (data, status, jqXHR) {
     user.token = data.token;
     updatePageWithLoginStatus();
+    $.ajax(
+        {
+            url: baseURL + '/simuchess/everything',
+            headers : {
+                authorization: user.token,
+            },
+            success : setUpBoards,
+        }
+    )
 }
 
-addPiece("c6","black","pawn");
+function selectedGameID() {
+    return Number($("#game-choice option:selected").val())
+}
+
+function setUpBoards (data, status, jqXHR) {
+    gameData = data
+    gameData.games.forEach(function (game) {
+        $("#game-choice").append(`<option value="${game.id}">${game.name}: ${game.black} vs ${game.white}</option>`);
+    });
+    drawBoard();
+}
+
+function drawBoard () {
+    clearBoard();
+    const id = selectedGameID();
+    const pieces = gameData.games.filter(x => (x.id === id))[0].pieces;
+    pieces.forEach(piece => addPiece(piece.square, piece.colour, piece.piece_type));
+
+}
+
+$("#game-choice").change(drawBoard);
