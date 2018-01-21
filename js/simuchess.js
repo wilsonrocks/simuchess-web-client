@@ -17,7 +17,7 @@ function loggedIn() {
 function displayLoginError(message) {
     $("#login-error")
     .text(`Error: ${message}`)
-    .css("display", "unset");
+    .css("display", "inherit");
 }
 
 function clearLoginError() {

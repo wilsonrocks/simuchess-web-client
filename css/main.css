@@ -1,8 +1,8 @@
 body {
-    max-width: 800px;
     margin: auto;
     padding: 5px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    max-width: 800px;
 }
 
 form {
@@ -17,9 +17,9 @@ form {
     display: none;
     color: red;
 }
+
 .board {
    border-collapse: collapse;
-   margin: auto;
    margin-top: 10px;
    padding: 20px;
    table-layout: fixed;
@@ -44,4 +44,20 @@ form {
 .row:nth-child(even) .square:nth-child(odd)
 {
     background-color: brown;
+}
+
+.game-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+}
+
+.player-info {
+    text-align: center;
+    border: 1px solid black;
+}
+
+#black-info {
+    background-color: black;
+    color: white;
 }
