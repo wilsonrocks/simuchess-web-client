@@ -1,8 +1,6 @@
 body {
-    margin: auto;
-    width: 90vmin;
-    padding: 5px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: auto;
 }
 
 form {
@@ -19,41 +17,27 @@ form {
 }
 
 .board {
-   border-collapse: collapse;
-   margin-top: 10px;
-   margin: auto;
-   padding: 20px;
-   table-layout: auto;
-   min-width: 270px;
+    display: grid;
+    grid-template-columns: repeat(8,1fr);
+    max-width: 600px;
+    margin: auto;
 }
 
 .square {
-    width: 10vh;
-    height: 10vh;
-    
-    min-width: 30px;
-    min-height: 30px;
+    height: 0;
+    padding-bottom: 100%;
 }
 
-.board td {
-    border: none;
-    text-align: center;
-}
-
-.row:nth-child(even) .square:nth-child(even),
-.row:nth-child(odd) .square:nth-child(odd) {
+.white-square {
     background-color: orange;
 }
 
-.row:nth-child(odd) .square:nth-child(even),
-.row:nth-child(even) .square:nth-child(odd)
-{
+.black-square {
     background-color: brown;
 }
 
 .piece {
-    object-fit: contain;
-    height: 90%;
+    width: 100%;
 }
 
 .player-info {

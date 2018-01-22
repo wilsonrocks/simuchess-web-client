@@ -1,16 +1,15 @@
 """
 A simple script to generate the HTML board for the simuchess game web client.
 """
-print('<table class="board">')
-print('  <tr>')
-print('    <th scope="column"></th>')
-for chessFile in "abcdefgh":
-    print('    <th scope="column">{}</th>'.format(chessFile))
-print('  </tr>')
+
+seed = ["white-square", "black-square"]
+odd_row = seed * 4
+even_row = odd_row[-1::-1]
+two_rows = odd_row + even_row
+board = iter(two_rows * 4)
+
+print('<div class="board">')
 for chessRank in "87654321":
-    print('  <tr class="row">')
-    print('    <th scope="row">{}</th>'.format(chessRank))
     for chessFile in "abcdefgh":
-        print('    <td class="square" id="{square}"></td>'.format(square=(chessFile + chessRank)))
-    print('  </tr>')
-print('</table>')
+        print('    <div class="square {colour}" id="{square}"></div>'.format(colour=next(board), square=(chessFile + chessRank)))
+print('</div>')
