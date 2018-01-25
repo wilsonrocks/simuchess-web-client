@@ -1,17 +1,11 @@
 const baseURL = "http://wilsonseverywhere.ddns.net";
 
-let user = {};
 let gameData = {};
 
-const clearUserData = function () {
-    user.username = user.password = user.token = undefined;
-}
 
-clearUserData();
-updatePageWithLoginStatus();
 
 function loggedIn() {
-    return user.token !== undefined;
+    return Cookies.get("token") !== undefined;
 }
 
 function displayLoginError(message) {
@@ -43,7 +37,7 @@ function updatePageWithLoginStatus () {
     if (loggedIn()) {
         $(".logged-in").css("display","unset");
         $(".not-logged-in").css("display","none");
-        $(".username-greeting").text(user.username);
+        $(".username-greeting").text(Cookies.get("username"));
     }
 
     else { //not logged in
@@ -61,23 +55,20 @@ function addGameChoices () {
     });
 }
 
-const tryLogOut = function () {
+const tryLogOut = function () { 
     $.ajax({
         url: baseURL + "/simuchess/token",
         type: 'DELETE',
         headers: {
             Authorization: user.token,
         },
-        success: successfulLogOut,
+        success: successfulLogOut, //TODO what if token is rejected - do logout from this end any
     });
-
 }
 
 function successfulLogOut (data, status, jqXHR) {
-    
     clearBoard();
     $("#game-choice").children().remove();    // wipe games list
-    clearUserData();// reset user object to undefined
     updatePageWithLoginStatus();
 }
 
@@ -95,13 +86,13 @@ $("#login-submit").click(tryLogin);
 function tryLogin () {
     clearLoginError();
 
-    user.username = $("#username-field").val();
-    user.password = $("#password-field").val();
+    const username = $("#username-field").val();
+    const password = $("#password-field").val();
 
     $.ajax(
     {
         url : baseURL + '/simuchess/token',
-        headers : basicAuthHeader(user.username, user.password),
+        headers : basicAuthHeader(username, password),
         statusCode : {
             401 : function () {displayLoginError("Problem with your credentials")},
             500 : function () {displayLoginError("Problem with the Simuchess game server")},
@@ -112,15 +103,16 @@ function tryLogin () {
 }
 
 function successfulLogin (data, status, jqXHR) {
-    user.token = data.token;
+    Cookies.set("token", data.token);
+    Cookies.set("username", data.username);
     updatePageWithLoginStatus();
     $.ajax(
         {
             url: baseURL + '/simuchess/everything',
             headers : {
-                authorization: user.token,
+                authorization: Cookies.get("token"),
             },
-            success : setUpBoards,
+            success : setUpBoards, //TODO What happens if token is rejected (which it shouldn't be as we just got it)
         }
     )
 }
@@ -145,4 +137,13 @@ function drawBoard () {
 
 }
 
+function flashMessage(text) {
+    return $('body').prepend('<div class="flash-message">'+text+'</div>')
+    .children().first()
+    .append('<button type="button" class="flash-button">Ok</button>')
+    .children().last()
+    .on('click',function () {$(this).parent().remove();});
+}
+
+updatePageWithLoginStatus();
 $("#game-choice").change(drawBoard);
