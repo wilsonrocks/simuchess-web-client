@@ -1,8 +1,14 @@
+//is there already a token?
 const baseURL = "http://wilsonseverywhere.ddns.net";
 
+
+if (loggedIn()) {
+    // we have a ttoken, so try and get the data
+    chessAjax("GET", "/everything", setUpBoards);
+}
+
+
 let gameData = {};
-
-
 
 function loggedIn() {
     return Cookies.get("token") !== undefined;
@@ -44,6 +50,7 @@ function updatePageWithLoginStatus () {
         $(".logged-in").css("display","none"); //don't show the logged in stuff
         $(".not-logged-in").css("display","unset"); //go back to whatever it was
         $(".username-greeting").text("Guest");
+        clearBoard();
     }
 }
 
@@ -56,17 +63,12 @@ function addGameChoices () {
 }
 
 const tryLogOut = function () { 
-    $.ajax({
-        url: baseURL + "/simuchess/token",
-        type: 'DELETE',
-        headers: {
-            Authorization: user.token,
-        },
-        success: successfulLogOut, //TODO what if token is rejected - do logout from this end any
-    });
+    chessAjax("DELETE","/token",successfulLogOut);
 }
 
 function successfulLogOut (data, status, jqXHR) {
+    Cookies.remove("token");
+    Cookies.remove("username");
     clearBoard();
     $("#game-choice").children().remove();    // wipe games list
     updatePageWithLoginStatus();
@@ -88,7 +90,6 @@ function tryLogin () {
 
     const username = $("#username-field").val();
     const password = $("#password-field").val();
-
     $.ajax(
     {
         url : baseURL + '/simuchess/token',
@@ -102,7 +103,32 @@ function tryLogin () {
     });
 }
 
-function successfulLogin (data, status, jqXHR) {
+function chessAjax(method, endpoint, callback, data) {
+    $.ajax(
+        {
+            
+            url: baseURL + "/simuchess" + endpoint,
+            headers: {
+                authorization: Cookies.get("token")
+            },
+            statusCode : {
+                401: function () {
+                    flashMessage("There was a problem with your login token. We've logged you out. Please try and log in again.");
+                    Cookies.remove("token");
+                    Cookies.remove("username");
+                    updatePageWithLoginStatus();
+                },
+                500 : function () {displayLoginError("Problem with the Simuchess game server")},
+                502 : function () {displayLoginError("Problem with the Simuchess Gateway")}
+            },  
+            success: callback,
+            data: data,
+            method: method
+        }
+    );
+}
+
+function successfulLogin (data) { //this doesn't use chessAjax() because it uses basic auth instead of token
     Cookies.set("token", data.token);
     Cookies.set("username", data.username);
     updatePageWithLoginStatus();
@@ -121,8 +147,8 @@ function selectedGameID() {
     return Number($("#game-choice option:selected").val())
 }
 
-function setUpBoards (data, status, jqXHR) {
-    gameData = data
+function setUpBoards (data) {
+    gameData = data;
     gameData.games.forEach(function (game) {
         $("#game-choice").append(`<option value="${game.id}">${game.name}: ${game.black} vs ${game.white}</option>`);
     });
