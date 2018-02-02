@@ -27,7 +27,12 @@ function clearLoginError() {
 }
 
 function addPiece (square, colour, piece) {
-    $("#"+square).prepend(`<img class="piece" src="images/${colour}_${piece}.svg" alt="${colour} ${piece}">`);
+    $("#"+square).prepend(`<img class="piece" src="images/${colour}_${piece}.svg" alt="${colour} ${piece}">`)
+    .children().first()
+    .draggable({
+        containment:"#board",
+        revert: "invalid",
+        });
 }
 
 function clearSquare (square) {
@@ -173,3 +178,16 @@ function flashMessage(text) {
 
 updatePageWithLoginStatus();
 $("#game-choice").change(drawBoard);
+$(".square").droppable({
+    drop: function (event, ui) {
+        ui.draggable.position({
+            my: "center",
+            at: "center",
+            of: $(this),
+            using: function(position) {
+                $(this).animate(position, 100);
+            }
+        })
+
+    }
+});
